@@ -23,6 +23,8 @@
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>1.8</java.version>
+        <release>1</release>
+        <revision>-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -89,6 +91,15 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+        
+        <!-- rpm -->
+        <rpm.name>jhcloud</rpm.name>
+        <rpm.folder>jhcloud</rpm.folder>
+        <rpm.user>cbfast</rpm.user>
+        <rpm.group>cbfast</rpm.group>
+        <rpm.release>${release}</rpm.release>
+        <cxf.version>3.3.3</cxf.version>
+        
     </properties>
 
     <dependencyManagement>
@@ -831,6 +842,177 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>rpm-maven-plugin</artifactId>
+                    <version>2.1.5</version>
+                    <extensions>true</extensions>
+                    <executions>
+                        <execution>
+                            <id>generate-rpm</id>
+                            <phase>${rpmPackagePhase}</phase>
+                            <goals>
+                                <goal>rpm</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <name>${rpm.name}</name>
+                        <group>Application/Collectors</group>
+                        <release>{rpm.release}</release>
+                        <license>(c) 2019, ReadinessIT</license>
+                        <distribution>ReadinessIT 2019</distribution>
+                        <packager>ReadinessIT</packager>
+                        <mappings>
+                            <mapping>
+                                <directoryIncluded>true</directoryIncluded>
+                                <directory>/opt/${rpm.user}/${rpm.folder}</directory>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                            </mapping>
+                            <mapping>
+                                <directoryIncluded>true</directoryIncluded>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/bin</directory>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                            </mapping>
+                            <mapping>
+                                <directoryIncluded>true</directoryIncluded>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/lib</directory>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                            </mapping>
+                            <mapping>
+                                <directoryIncluded>true</directoryIncluded>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/conf</directory>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                            </mapping>
+                            <mapping>
+                                <directoryIncluded>false</directoryIncluded>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/lib</directory>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>500</filemode>
+                                <sources>
+                                    <source>
+                                        <location>
+                                            ${project.build.directory}/${project.artifactId}-${project.version}.jar
+                                        </location>
+                                        <destination>${rpm.folder}.jar</destination>
+                                    </source>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/lib</directory>
+                                <directoryIncluded>false</directoryIncluded>
+                                <configuration>noreplace</configuration>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>400</filemode>
+                                <sources>
+                                    <source>
+                                        <location>src/main/rpm/service.conf</location>
+                                        <destination>${rpm.folder}.conf</destination>
+                                    </source>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/etc/init.d</directory>
+                                <filemode>755</filemode>
+                                <sources>
+                                    <softlinkSource>
+                                        <destination>${rpm.name}</destination>
+                                        <location>/opt/${rpm.user}/${rpm.folder}/lib/${rpm.folder}.jar</location>
+                                    </softlinkSource>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/lib</directory>
+                                <directoryIncluded>false</directoryIncluded>
+                                <configuration>noreplace</configuration>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                                <sources>
+                                    <source>
+                                        <location>src/main/resources/config/application-prod.yml</location>
+                                        <destination>application-prod.yml</destination>
+                                    </source>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/opt/${rpm.user}/${rpm.folder}/templates</directory>
+                                <directoryIncluded>false</directoryIncluded>
+                                <configuration>noreplace</configuration>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                                <sources>
+                                    <source>
+                                        <location>src/main/resources/templates/template.html</location>
+                                        <destination>template.html</destination>
+                                    </source>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/var/log/${rpm.user}/${rpm.folder}</directory>
+                                <directoryIncluded>true</directoryIncluded>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                            </mapping>
+                            <mapping>
+                                <directory>/opt/${rpm.user}/${rpm.folder}</directory>
+                                <filemode>755</filemode>
+                                <sources>
+                                    <softlinkSource>
+                                        <destination>log</destination>
+                                        <location>/var/log/${rpm.user}/${rpm.folder}</location>
+                                    </softlinkSource>
+                                </sources>
+                            </mapping>
+                            <mapping>
+                                <directory>/var/log/${rpm.user}/${rpm.folder}</directory>
+                                <directoryIncluded>false</directoryIncluded>
+                                <username>${rpm.user}</username>
+                                <groupname>${rpm.group}</groupname>
+                                <filemode>755</filemode>
+                                <sources>
+                                    <source>
+                                        <location>src/main/rpm/empty.file</location>
+                                        <destination>${rpm.folder}_console.log</destination>
+                                    </source>
+                                </sources>
+                            </mapping>
+                        </mappings>
+                        <prepareScriptlet>
+                            <script>echo "preparing ${project.name}"</script>
+                        </prepareScriptlet>
+                        <!--    <preinstallScriptlet>
+                                <scriptFile>src/main/bin/preinstall.sh</scriptFile>
+                                <fileEncoding>utf-8</fileEncoding>
+                            </postinstallScriptlet>-->
+                        <preremoveScriptlet>
+                            <script><![CDATA[
+                            chkconfig --del ${rpm.name}
+                        ]]>
+                            </script>
+                        </preremoveScriptlet>
+                        <postinstallScriptlet>
+                            <script><![CDATA[
+                            chkconfig --add ${rpm.name}
+                            chkconfig ${rpm.name} on
+                        ]]>
+                            </script>
+                        </postinstallScriptlet>
+                        <needarch>noarch</needarch>
+                    </configuration>
+                </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
             </plugins>
         </pluginManagement>
@@ -897,7 +1079,7 @@
                                     <directory>target/classes/static/</directory>
                                 </fileset>
                             </filesets>
-                        </configuration>
+                        </configuration>iq
                     </plugin>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
