@@ -1,8 +1,20 @@
 #!/usr/bin/env groovy
 
 node {
+
+    def scmVars
+    def gitCommitShort
+    def revisionWithSeparator
+    
     stage('checkout') {
-        checkout scm
+        scmVars =  checkout scm
+        gitCommitShort = sh(
+            script: "printf \$(git rev-parse --short ${scmVars.GIT_COMMIT})",
+            returnStdout: true
+        ).trim()
+        revision = currentBuild.number + "." + gitCommitShort
+        revisionWithSeparator = "-" + revision
+        release = currentBuild.number + "." + gitCommitShort
     }
 
     stage('check java') {
