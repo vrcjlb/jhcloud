@@ -1,0 +1,39 @@
+{
+    "name": "Relationship",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "partyRelationship",
+            "otherEntityRelationshipName": "relationship",
+            "relationshipName": "partyRelationship"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "relationship",
+            "otherEntityRelationshipName": "relationship",
+            "relationshipName": "parentId",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191206145415",
+    "entityTableName": "relationship",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "jhcloud",
+    "applications": "*",
+    "microserviceName": "jhcloud"
+}

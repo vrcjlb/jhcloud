@@ -1,0 +1,36 @@
+{
+    "name": "PartyAttribute",
+    "fields": [
+        {
+            "fieldName": "valueAttribute",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "partyTypeAttribute",
+            "otherEntityRelationshipName": "partyAttribute",
+            "relationshipName": "partyTypeAttribute",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "party",
+            "otherEntityRelationshipName": "partyAttribute",
+            "relationshipName": "party",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191206145412",
+    "entityTableName": "party_attribute",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "jhcloud",
+    "applications": "*",
+    "microserviceName": "jhcloud"
+}
