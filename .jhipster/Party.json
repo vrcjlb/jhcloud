@@ -1,0 +1,74 @@
+{
+    "name": "Party",
+    "fields": [
+        {
+            "fieldName": "status",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "partyRole",
+            "otherEntityRelationshipName": "party",
+            "relationshipName": "partyRole"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "partyAttribute",
+            "otherEntityRelationshipName": "party",
+            "relationshipName": "partyAttribute"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "partyRelationship",
+            "otherEntityRelationshipName": "fromPartyId",
+            "relationshipName": "fromPartyId"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "partyRelationship",
+            "otherEntityRelationshipName": "toPartyId",
+            "relationshipName": "toPartyId"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "person",
+            "otherEntityRelationshipName": "party",
+            "relationshipName": "person",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "partyGroup",
+            "otherEntityRelationshipName": "party",
+            "relationshipName": "partyGroup",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "partyType",
+            "otherEntityRelationshipName": "party",
+            "relationshipName": "partyType",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191206145410",
+    "entityTableName": "party",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "jhcloud",
+    "applications": "*",
+    "microserviceName": "jhcloud"
+}

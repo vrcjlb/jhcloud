@@ -1,0 +1,80 @@
+    entity PartyType {
+        description String required
+    }
+
+    entity Person {
+        salutation String
+        firstName String required
+        middleName String
+        lastName String required
+        personalTitle String
+        gender Integer required
+        birthDate LocalDate required
+        maritalStatus Integer
+    }
+
+    entity PartyGroup {
+        groupName String required
+        groupNameLocal String
+        siteName String
+        office String
+        comments String
+        logoImageUrl String
+    }
+
+    entity Party {
+        status Boolean required
+        description String
+    }
+
+    entity PartyTypeAttribute {
+        description String
+    }
+
+    entity PartyAttribute {
+        valueAttribute String
+    }
+
+    entity Role {
+        description String
+        status Boolean
+    }
+
+    entity PartyRole {
+        status Boolean
+    }
+
+    entity Relationship {
+        description String
+        status Boolean
+    }
+
+    entity PartyRelationship {
+        status Boolean
+    }
+
+    relationship OneToMany {
+        PartyType to PartyTypeAttribute
+        PartyType to Party
+        PartyTypeAttribute to PartyAttribute
+        Role to PartyRole
+        Relationship to PartyRelationship
+        Party to PartyRole
+        Party to PartyAttribute
+        Party{fromPartyId} to PartyRelationship{fromPartyId}
+        Party{toPartyId} to PartyRelationship{toPartyId}
+    }
+
+    relationship ManyToOne {
+        PartyType{parentId} to PartyType
+        Relationship{parentId} to Relationship
+    }
+
+    relationship OneToOne {
+        Person to Party
+        PartyGroup to Party
+    }
+
+    dto * with mapstruct
+    service * with serviceClass
+    service * with serviceImpl

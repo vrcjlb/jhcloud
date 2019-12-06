@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity PartyAttribute.
+    -->
+    <changeSet id="20191206145412-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="party_type_attribute_id"
+                                 baseTableName="party_attribute"
+                                 constraintName="fk_party_attribute_party_type_attribute_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="party_type_attribute"/>
+
+        <addForeignKeyConstraint baseColumnNames="party_id"
+                                 baseTableName="party_attribute"
+                                 constraintName="fk_party_attribute_party_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="party"/>
+
+    </changeSet>
+</databaseChangeLog>
