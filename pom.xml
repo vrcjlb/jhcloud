@@ -1079,7 +1079,7 @@
                                     <directory>target/classes/static/</directory>
                                 </fileset>
                             </filesets>
-                        </configuration>iq
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
