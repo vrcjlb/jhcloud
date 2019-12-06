@@ -31,4 +31,16 @@ node {
         sh "./mvnw -ntp verify -Pprod -DskipTests"
         archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
+    
+    stage('build rpm') {
+        sh "./mvnw "+
+            "-Drevision=${revisionWithSeparator}" +
+            "-Drelease=${release} "+
+            "-Drpm.name='fast-ebusadaptor' "+
+            "-Drpm.user='cbfast' "+
+            "-Drpm.group='cbfast' "+
+            "rpm:rpm"
+        archiveArtifacts artifacts: '**/target/*.rpm', fingerprint: true
+    }
+    
 }
